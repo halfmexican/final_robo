@@ -26,6 +26,7 @@ from pybricks.messaging import BluetoothMailboxServer, TextMailbox
 DRIVE_SPEED = 400  # degrees/second
 TURN_RATE = 150    # degrees/second
 ARM_SPEED = 100    # degrees/second
+is_driving = False
 
 # Commands
 STOP_COMMAND_DRIVE = "STOP_DRIVE"
@@ -66,26 +67,41 @@ while True:
 
         # Motor Control
         if received_command == FORWARD_COMMAND:
+            arm_motor.stop() # Stop arm if it was moving
+            is_driving = True
             left_motor.run(DRIVE_SPEED)
             right_motor.run(DRIVE_SPEED)
         elif received_command == BACKWARD_COMMAND:
+            arm_motor.stop() # Stop arm if it was moving
+            is_driving = True
             left_motor.run(-DRIVE_SPEED)
             right_motor.run(-DRIVE_SPEED)
         elif received_command == LEFT_COMMAND:
+            arm_motor.stop() # Stop arm if it was moving
+            is_driving = True
             left_motor.run(-TURN_RATE)
             right_motor.run(TURN_RATE)
         elif received_command == RIGHT_COMMAND:
+            arm_motor.stop() # Stop arm if it was moving
+            is_driving = True
             left_motor.run(TURN_RATE)
             right_motor.run(-TURN_RATE)
         # Add a STOP command handling
         elif received_command == STOP_COMMAND_DRIVE:
              left_motor.stop()
              right_motor.stop()
+             is_driving = False
         # Arm Motor Control
         elif received_command == ARM_UP_COMMAND:
-            arm_motor.run(ARM_SPEED) 
+            if not is_driving: # Only move arm if not driving
+                arm_motor.run(ARM_SPEED)
+            else:
+                print("Cannot move arm while driving.")
         elif received_command == ARM_DOWN_COMMAND: 
-            arm_motor.run(-ARM_SPEED) 
+            if not is_driving: # Only move arm if not driving
+                arm_motor.run(-ARM_SPEED)
+            else:
+                print("Cannot move arm while driving.")
         elif received_command == STOP_COMMAND_ARM:
              arm_motor.stop()
 
@@ -94,6 +110,7 @@ while True:
              left_motor.stop()
              right_motor.stop()
              arm_motor.stop()
+             is_driving = False
     else:
 
         pass
