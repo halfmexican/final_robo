@@ -90,15 +90,11 @@ while True:
              is_driving = False
         # Arm Motor Control
         elif received_command == ARM_UP_COMMAND:
-            if not is_driving: # Only move arm if not driving
+            if not is_driving:
                 arm_motor.run(ARM_SPEED)
-            else:
-                print("Cannot move arm while driving.")
         elif received_command == ARM_DOWN_COMMAND: 
-            if not is_driving: # Only move arm if not driving
+            if not is_driving: 
                 arm_motor.run(-ARM_SPEED)
-            else:
-                print("Cannot move arm while driving.")
         elif received_command == STOP_COMMAND_ARM:
              arm_motor.stop()
         elif received_command == STOP_COMMAND_ALL: 
