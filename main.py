@@ -67,22 +67,22 @@ while True:
 
         # Motor Control
         if received_command == FORWARD_COMMAND:
-            arm_motor.stop() # Stop arm if it was moving
+            arm_motor.stop() 
             is_driving = True
             left_motor.run(DRIVE_SPEED)
             right_motor.run(DRIVE_SPEED)
         elif received_command == BACKWARD_COMMAND:
-            arm_motor.stop() # Stop arm if it was moving
+            arm_motor.stop()
             is_driving = True
             left_motor.run(-DRIVE_SPEED)
             right_motor.run(-DRIVE_SPEED)
         elif received_command == LEFT_COMMAND:
-            arm_motor.stop() # Stop arm if it was moving
+            arm_motor.stop()
             is_driving = True
             left_motor.run(-TURN_RATE)
             right_motor.run(TURN_RATE)
         elif received_command == RIGHT_COMMAND:
-            arm_motor.stop() # Stop arm if it was moving
+            arm_motor.stop()
             is_driving = True
             left_motor.run(TURN_RATE)
             right_motor.run(-TURN_RATE)
