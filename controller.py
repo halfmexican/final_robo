@@ -104,7 +104,7 @@ while True:
              pass
         else:
             mbox.send(command_to_send)
-            last_command_sent = current_command # Update last_command_sent only when sending
+            last_command_sent = current_command 
             command_timer.reset()
     elif is_movement_command and command_timer.time() > COMMAND_DELAY_MS:
         # If it's the same command, resend 

@@ -108,6 +108,5 @@ while True:
              is_driving = False
     else:
         pass
-
-    # Small delay
+    
     wait(10)
