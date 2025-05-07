@@ -40,24 +40,21 @@ ev3.speaker.set_speech_options(language='es-la', voice='f1') # 🇲🇽
 client = BluetoothMailboxClient()
 mbox = TextMailbox('control', client)
 
-print("Controller Ready.")
-print("Connecting to Ricardo")
 ev3.speaker.beep()
 
 try:
     client.connect("Ricardo")
-    print("Connected!")
     wait(5000)
     ev3.speaker.say("Connectado! Hola Ricardo")
     ev3.speaker.beep(frequency=100, duration=200)
 except Exception as e:
-    print("Connection failed:", e)
+    print("failed:", e)
     wait(5000)
     exit()
 
 # Main Control Loop
 last_command_sent = None 
-command_timer = StopWatch() # Timer to manage command sending rate
+command_timer = StopWatch() 
 
 while True:
     # Get the list of pressed buttons
@@ -89,7 +86,6 @@ while True:
         elif Button.RIGHT in pressed:
             current_command = RIGHT_COMMAND
         else:
-            # No drive buttons pressed while Center is not pressed
             # Determine what needs stopping based on the last command
             if last_command_sent in [FORWARD_COMMAND, BACKWARD_COMMAND, LEFT_COMMAND, RIGHT_COMMAND]:
                  current_command = STOP_COMMAND_DRIVE
@@ -101,24 +97,18 @@ while True:
     is_movement_command = current_command not in [None, STOP_COMMAND_DRIVE, STOP_COMMAND_ARM, STOP_COMMAND_ALL]
 
     if current_command != last_command_sent:
-        # If command changed, send it immediately
         print("Sending:", current_command)
-        # Send STOP_ALL only if current_command becomes explicitly None after movement
-        # If current_command is one of the specific STOP commands, send that.
+
         command_to_send = current_command
         if command_to_send is None:
-             # Decide if doing nothing should send a general stop or just nothing
-             # Sending nothing might be better unless you want explicit stop on button release
-             # Let's refine: only send STOP if it was explicitly set above
-             pass # Don't send anything if command is None
+             pass
         else:
             mbox.send(command_to_send)
             last_command_sent = current_command # Update last_command_sent only when sending
             command_timer.reset()
     elif is_movement_command and command_timer.time() > COMMAND_DELAY_MS:
-        # If it's the same movement command, resend periodically
+        # If it's the same command, resend 
         mbox.send(current_command)
         command_timer.reset()
 
-    # Small delay to prevent busy-waiting
     wait(20)

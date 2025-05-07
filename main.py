@@ -23,9 +23,9 @@ from pybricks.tools import wait
 from pybricks.messaging import BluetoothMailboxServer, TextMailbox
 
 # Configuration
-DRIVE_SPEED = 400  # degrees/second
-TURN_RATE = 150    # degrees/second
-ARM_SPEED = 100    # degrees/second
+DRIVE_SPEED = 400  
+TURN_RATE = 150    
+ARM_SPEED = 100    
 is_driving = False
 
 # Commands
@@ -51,10 +51,8 @@ arm_motor = Motor(Port.D)
 # Bluetooth
 server = BluetoothMailboxServer()
 mbox = TextMailbox('control', server)
-print("Robot Waiting for Connection...")
 ev3.speaker.beep()
 server.wait_for_connection()
-print("Connected!")
 ev3.speaker.beep(frequency=500, duration=200)
 ev3.speaker.say("Connectado! Hola Regina")
 
@@ -86,7 +84,6 @@ while True:
             is_driving = True
             left_motor.run(TURN_RATE)
             right_motor.run(-TURN_RATE)
-        # Add a STOP command handling
         elif received_command == STOP_COMMAND_DRIVE:
              left_motor.stop()
              right_motor.stop()
@@ -104,15 +101,12 @@ while True:
                 print("Cannot move arm while driving.")
         elif received_command == STOP_COMMAND_ARM:
              arm_motor.stop()
-
-        #Stop All
         elif received_command == STOP_COMMAND_ALL: 
              left_motor.stop()
              right_motor.stop()
              arm_motor.stop()
              is_driving = False
     else:
-
         pass
 
     # Small delay
